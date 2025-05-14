@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - Hospital Management System</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <!-- Include jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Apollo Hospitality</div>
+            <ul class="nav-links">
+                <li><a href="Home.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="book-consultation.html">Book Consultation</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="confirmation">
+            <h2>Booking Confirmation</h2>
+            <p>Thank you for your payment! Your booking has been confirmed.</p>
+            <div class="booking-details">
+                <p><strong>Transaction ID:</strong> <span id="transaction-id"></span></p>
+                <p><strong>Cardholder Name:</strong> <span id="cardholder-name"></span></p>
+            </div>
+            <button id="download-letter" class="btn primary-btn" aria-label="Download Appointment Letter">Download Appointment Letter</button>
+            <a href="Home.html" class="btn secondary-btn" aria-label="Return to Home">Return to Home</a>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Apollo Hospitality. All rights reserved.</p>
+    </footer>
+    <script>
+        // Retrieve booking details from localStorage
+        const transactionId = localStorage.getItem('transactionId');
+        const cardholderName = localStorage.getItem('cardholderName');
+        const consultationName = localStorage.getItem('consultationName');
+        const consultationEmail = localStorage.getItem('consultationEmail');
+        const consultationDoctor = localStorage.getItem('consultationDoctor');
+        const consultationDate = localStorage.getItem('consultationDate');
+        const consultationTime = localStorage.getItem('consultationTime');
+
+        // Display booking details
+        document.getElementById('transaction-id').textContent = transactionId;
+        document.getElementById('cardholder-name').textContent = cardholderName;
+
+        // Clear localStorage after displaying the details
+        localStorage.removeItem('transactionId');
+        localStorage.removeItem('cardholderName');
+
+        // Generate and download the appointment letter as a PDF
+        const downloadButton = document.getElementById('download-letter');
+        downloadButton.addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add content to the PDF
+            doc.setFontSize(16);
+            doc.text('Apollo Hospitality', 10, 10);
+            doc.setFontSize(12);
+            doc.text('--------------------', 10, 15);
+            doc.text('Appointment Confirmation', 10, 25);
+            doc.text(`Dear ${consultationName},`, 10, 35);
+            doc.text('Thank you for booking your consultation with Apollo Hospitality.', 10, 45);
+            doc.text('Below are your booking details:', 10, 55);
+            doc.text(`Transaction ID: ${transactionId}`, 10, 65);
+            doc.text(`Cardholder Name: ${cardholderName}`, 10, 75);
+            doc.text(`Email: ${consultationEmail}`, 10, 85);
+            doc.text(`Doctor: ${consultationDoctor}`, 10, 95);
+            doc.text(`Date: ${consultationDate}`, 10, 105);
+            doc.text(`Time: ${consultationTime}`, 10, 115);
+            doc.text('Please arrive at least 15 minutes before your scheduled appointment time.', 10, 125);
+            doc.text('If you have any questions, feel free to contact us.', 10, 135);
+            doc.text('Regards,', 10, 145);
+            doc.text('Apollo Hospitality Team', 10, 155);
+
+            // Save the PDF
+            doc.save('Appointment_Letter.pdf');
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('header').innerHTML = data;
+
+                    // Highlight the active navigation link
+                    const currentPage = window.location.pathname.split("/").pop();
+                    const navLinks = document.querySelectorAll(".nav-links a");
+
+                    navLinks.forEach(link => {
+                        if (link.getAttribute("href") === currentPage) {
+                            link.classList.add("active");
+                        }
+                    });
+
+                    // Burger menu toggle
+                    const burger = document.querySelector('.burger');
+                    const navLinksContainer = document.querySelector('.nav-links');
+                    if (burger && navLinksContainer) {
+                        burger.addEventListener('click', () => {
+                            navLinksContainer.classList.toggle('nav-active');
+                        });
+                    }
+                })
+                .catch(error => console.error('Error loading navigation bar:', error));
+        });
+    </script>
+</body>
+</html>

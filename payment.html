@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Hospital Management System</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Apollo Hospitality</div>
+            <ul class="nav-links">
+                <li><a href="Home.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="book-consultation.html">Book Consultation</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="payment">
+            <h2>Payment</h2>
+            <p>Please complete your payment to confirm the consultation booking.</p>
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label for="card-name">Cardholder Name:</label>
+                    <input type="text" id="card-name" name="card-name" placeholder="Enter cardholder name" required>
+                </div>
+                <div class="form-group">
+                    <label for="card-number">Card Number:</label>
+                    <input type="text" id="card-number" name="card-number" placeholder="Enter card number" pattern="[0-9]{16}" required>
+                </div>
+                <div class="form-group">
+                    <label for="expiry-date">Expiry Date:</label>
+                    <input type="month" id="expiry-date" name="expiry-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV:</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" pattern="[0-9]{3}" required>
+                </div>
+                <button type="submit" class="btn primary-btn" aria-label="Complete Payment">Complete Payment</button>
+                <p id="payment-form-message" class="form-message"></p>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Apollo Hospitality. All rights reserved.</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('header').innerHTML = data;
+
+                    // Highlight the active navigation link
+                    const currentPage = window.location.pathname.split("/").pop();
+                    const navLinks = document.querySelectorAll(".nav-links a");
+
+                    navLinks.forEach(link => {
+                        if (link.getAttribute("href") === currentPage) {
+                            link.classList.add("active");
+                        }
+                    });
+
+                    // Burger menu toggle
+                    const burger = document.querySelector('.burger');
+                    const navLinksContainer = document.querySelector('.nav-links');
+                    if (burger && navLinksContainer) {
+                        burger.addEventListener('click', () => {
+                            navLinksContainer.classList.toggle('nav-active');
+                        });
+                    }
+                })
+                .catch(error => console.error('Error loading navigation bar:', error));
+        });
+
+        // Handle payment form submission
+        const paymentForm = document.getElementById('paymentForm');
+        const paymentMessage = document.getElementById('payment-form-message');
+
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                // Simulate payment processing
+                paymentMessage.textContent = 'Processing payment...';
+                paymentMessage.style.color = 'blue';
+
+                setTimeout(() => {
+                    // Generate a random transaction ID
+                    const transactionId = 'TXN' + Math.floor(Math.random() * 1000000);
+
+                    // Store booking details in localStorage
+                    const cardholderName = document.getElementById('card-name').value;
+                    localStorage.setItem('transactionId', transactionId);
+                    localStorage.setItem('cardholderName', cardholderName);
+
+                    // Redirect to the booking confirmation page
+                    window.location.href = 'booking-confirmation.html';
+                }, 3000);
+            });
+        }
+    </script>
+</body>
+</html>

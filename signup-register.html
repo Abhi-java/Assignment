@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup/Register - Hospital Management System</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Apollo Hospitality</div>
+            <ul class="nav-links">
+                <li><a href="Home.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="signup-register.html" class="active">Signup/Register</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="book-consultation.html">Book Consultation</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="signup-register">
+            <h2>Signup/Register</h2>
+            <div class="tabs">
+                <button id="signup-tab" class="tab active">Signup</button>
+                <button id="register-tab" class="tab">Register</button>
+            </div>
+            <div id="signup-form" class="form-container">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signup-username">Username:</label>
+                        <input type="text" id="signup-username" name="username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password:</label>
+                        <input type="password" id="signup-password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Signup</button>
+                    <p id="signup-message" class="form-message"></p>
+                </form>
+            </div>
+            <div id="register-form" class="form-container hidden">
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="name">Full Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" name="age" placeholder="Enter your age" min="1" max="120" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <select id="gender" name="gender" required>
+                            <option value="" disabled selected>Select your gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact Number:</label>
+                        <input type="tel" id="contact" name="contact" placeholder="Enter your contact number" pattern="[0-9]{10}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department:</label>
+                        <select id="department" name="department" required>
+                            <option value="" disabled selected>Select a department</option>
+                            <option value="general">General Medicine</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="orthopedics">Orthopedics</option>
+                            <option value="pediatrics">Pediatrics</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Register</button>
+                    <p id="register-message" class="form-message"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Apollo Hospitality. All rights reserved.</p>
+    </footer>
+    <script>
+        // Tab switching logic
+        const signupTab = document.getElementById('signup-tab');
+        const registerTab = document.getElementById('register-tab');
+        const signupFormContainer = document.getElementById('signup-form');
+        const registerFormContainer = document.getElementById('register-form');
+
+        signupTab.addEventListener('click', () => {
+            signupTab.classList.add('active');
+            registerTab.classList.remove('active');
+            signupFormContainer.classList.remove('hidden');
+            registerFormContainer.classList.add('hidden');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active');
+            signupTab.classList.remove('active');
+            registerFormContainer.classList.remove('hidden');
+            signupFormContainer.classList.add('hidden');
+        });
+
+        // Signup form submission
+        const signupForm = document.getElementById('signupForm');
+        const signupMessage = document.getElementById('signup-message');
+
+        signupForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const username = document.getElementById('signup-username').value.trim();
+            const password = document.getElementById('signup-password').value.trim();
+
+            if (!username || !password) {
+                signupMessage.textContent = 'Please fill out all fields.';
+                signupMessage.style.color = 'red';
+                return;
+            }
+
+            // Save user data to localStorage
+            localStorage.setItem('username', username);
+            localStorage.setItem('password', password);
+
+            signupMessage.textContent = 'Signup successful!';
+            signupMessage.style.color = 'green';
+        });
+
+        // Register form submission
+        const registrationForm = document.getElementById('registrationForm');
+        const registerMessage = document.getElementById('register-message');
+
+        registrationForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const age = document.getElementById('age').value.trim();
+            const gender = document.getElementById('gender').value;
+            const contact = document.getElementById('contact').value.trim();
+            const department = document.getElementById('department').value;
+
+            if (!name || !age || !gender || !contact || !department) {
+                registerMessage.textContent = 'Please fill out all fields.';
+                registerMessage.style.color = 'red';
+                return;
+            }
+
+            if (!/^\d{10}$/.test(contact)) {
+                registerMessage.textContent = 'Please enter a valid 10-digit contact number.';
+                registerMessage.style.color = 'red';
+                return;
+            }
+
+            registerMessage.textContent = 'Registration successful!';
+            registerMessage.style.color = 'green';
+
+            // Optionally, reset the form
+            registrationForm.reset();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('header').innerHTML = data;
+
+                    // Highlight the active navigation link
+                    const currentPage = window.location.pathname.split("/").pop();
+                    const navLinks = document.querySelectorAll(".nav-links a");
+
+                    navLinks.forEach(link => {
+                        if (link.getAttribute("href") === currentPage) {
+                            link.classList.add("active");
+                        }
+                    });
+
+                    // Burger menu toggle
+                    const burger = document.querySelector('.burger');
+                    const navLinksContainer = document.querySelector('.nav-links');
+                    if (burger && navLinksContainer) {
+                        burger.addEventListener('click', () => {
+                            navLinksContainer.classList.toggle('nav-active');
+                        });
+                    }
+                })
+                .catch(error => console.error('Error loading navigation bar:', error));
+        });
+    </script>
+</body>
+</html>

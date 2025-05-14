@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Hospital Management System</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Apollo Hospitality</div>
+            <ul class="nav-links">
+                <li><a href="Home.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="signup-register.html">Signup/Register</a></li>
+                <li><a href="admin-login.html">Admin Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="admin-dashboard">
+            <h2>Admin Dashboard</h2>
+            <div class="dashboard-data">
+                <h3>Total Signups</h3>
+                <p id="total-signups">0</p>
+
+                <h3>Total Bookings</h3>
+                <p id="total-bookings">0</p>
+
+                <h3>Patient Details</h3>
+                <ul id="patient-details"></ul>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Apollo Hospitality. All rights reserved.</p>
+    </footer>
+    <script>
+        // Restrict access to admin dashboard
+        if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
+            alert('Access denied. Please log in as admin.');
+            window.location.href = 'admin-login.html';
+        }
+
+        // Fetch and display data
+        const totalSignups = localStorage.getItem('totalSignups') || 0;
+        const totalBookings = localStorage.getItem('totalBookings') || 0;
+        const patientDetails = JSON.parse(localStorage.getItem('patientDetails')) || [];
+
+        document.getElementById('total-signups').textContent = totalSignups;
+        document.getElementById('total-bookings').textContent = totalBookings;
+
+        const patientDetailsList = document.getElementById('patient-details');
+        patientDetails.forEach((patient) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `Name: ${patient.name}, Email: ${patient.email}, Doctor: ${patient.doctor}, Date: ${patient.date}, Time: ${patient.time}`;
+            patientDetailsList.appendChild(listItem);
+        });
+    </script>
+</body>
+</html>

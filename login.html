@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hospital Management System</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Apollo Hospitality</div>
+            <ul class="nav-links">
+                <li><a href="Home.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="signup.html">Signup</a></li>
+                <li><a href="login.html" class="active">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="login">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="login-username">Username:</label>
+                    <input type="text" id="login-username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn primary-btn">Login</button>
+                <p id="login-message" class="form-message"></p>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Apollo Hospitality. All rights reserved.</p>
+    </footer>
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const loginMessage = document.getElementById('login-message');
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+
+            // Retrieve user data from localStorage
+            const storedUsername = localStorage.getItem('username');
+            const storedPassword = localStorage.getItem('password');
+
+            if (username === storedUsername && password === storedPassword) {
+                loginMessage.textContent = 'Login successful! Redirecting to home...';
+                loginMessage.style.color = 'green';
+
+                // Redirect to home page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'Home.html';
+                }, 2000);
+            } else {
+                loginMessage.textContent = 'Invalid username or password.';
+                loginMessage.style.color = 'red';
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('header').innerHTML = data;
+
+                    // Highlight the active navigation link
+                    const currentPage = window.location.pathname.split("/").pop();
+                    const navLinks = document.querySelectorAll(".nav-links a");
+
+                    navLinks.forEach(link => {
+                        if (link.getAttribute("href") === currentPage) {
+                            link.classList.add("active");
+                        }
+                    });
+
+                    // Burger menu toggle
+                    const burger = document.querySelector('.burger');
+                    const navLinksContainer = document.querySelector('.nav-links');
+                    if (burger && navLinksContainer) {
+                        burger.addEventListener('click', () => {
+                            navLinksContainer.classList.toggle('nav-active');
+                        });
+                    }
+                })
+                .catch(error => console.error('Error loading navigation bar:', error));
+        });
+    </script>
+</body>
+</html>

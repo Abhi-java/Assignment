@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Hospital Management System</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Apollo Hospitality</div>
+            <ul class="nav-links">
+                <li><a href="Home.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="book-consultation.html">Book Consultation</a></li>
+                <li><a href="signup.html">Signup</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="registration">
+            <h2>Register</h2>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" placeholder="Enter your age" min="1" max="120" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="" disabled selected>Select your gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contact">Contact Number:</label>
+                    <input type="tel" id="contact" name="contact" placeholder="Enter your contact number" pattern="[0-9]{10}" required>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department:</label>
+                    <select id="department" name="department" required>
+                        <option value="" disabled selected>Select a department</option>
+                        <option value="general">General Medicine</option>
+                        <option value="cardiology">Cardiology</option>
+                        <option value="orthopedics">Orthopedics</option>
+                        <option value="pediatrics">Pediatrics</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Register</button>
+                <p id="form-message" class="form-message"></p>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Apollo Hospitality. All rights reserved.</p>
+    </footer>
+    <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('header').innerHTML = data;
+
+                    // Highlight the active navigation link
+                    const currentPage = window.location.pathname.split("/").pop();
+                    const navLinks = document.querySelectorAll(".nav-links a");
+
+                    navLinks.forEach(link => {
+                        if (link.getAttribute("href") === currentPage) {
+                            link.classList.add("active");
+                        }
+                    });
+
+                    // Burger menu toggle
+                    const burger = document.querySelector('.burger');
+                    const navLinksContainer = document.querySelector('.nav-links');
+                    if (burger && navLinksContainer) {
+                        burger.addEventListener('click', () => {
+                            navLinksContainer.classList.toggle('nav-active');
+                        });
+                    }
+                })
+                .catch(error => console.error('Error loading navigation bar:', error));
+        });
+    </script>
+</body>
+</html>

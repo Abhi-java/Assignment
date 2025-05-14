@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System - Services</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Apollo Hospitality</div>
+            <ul class="nav-links">
+                <li><a href="Home.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="book-consultation.html">Book Consultation</a></li>
+                <li><a href="signup.html">Signup</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="services">
+            <h2>Our Services</h2>
+            <div class="service-grid">
+                <div class="service-item">
+                    <h3>General Medicine</h3>
+                    <p>Comprehensive care for all your general health needs.</p>
+                    <a href="service.html/general-medicine.html" class="btn">Learn More</a>
+                </div>
+                <div class="service-item">
+                    <h3>Cardiology</h3>
+                    <p>Advanced heart care with expert cardiologists.</p>
+                    <a href="service.html/cardiology.html" class="btn">Learn More</a>
+                </div>
+                <div class="service-item">
+                    <h3>Orthopedics</h3>
+                    <p>Specialized treatment for bones and joints.</p>
+                    <a href="service.html/orthopedics.html" class="btn">Learn More</a>
+                </div>
+                <div class="service-item">
+                    <h3>Pediatrics</h3>
+                    <p>Comprehensive care for children and adolescents.</p>
+                    <a href="service.html/pediatrics.html" class="btn">Learn More</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Apollo Hospitality. All rights reserved.</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('header').innerHTML = data;
+
+                    // Highlight the active navigation link
+                    const currentPage = window.location.pathname.split("/").pop();
+                    const navLinks = document.querySelectorAll(".nav-links a");
+
+                    navLinks.forEach(link => {
+                        if (link.getAttribute("href") === currentPage) {
+                            link.classList.add("active");
+                        }
+                    });
+
+                    // Burger menu toggle
+                    const burger = document.querySelector('.burger');
+                    const navLinksContainer = document.querySelector('.nav-links');
+                    if (burger && navLinksContainer) {
+                        burger.addEventListener('click', () => {
+                            navLinksContainer.classList.toggle('nav-active');
+                        });
+                    }
+                })
+                .catch(error => console.error('Error loading navigation bar:', error));
+        });
+    </script>
+</body>
+</html>
